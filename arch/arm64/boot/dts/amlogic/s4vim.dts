@@ -74,7 +74,7 @@
 		ion_cma_reserved:linux,ion-dev {
 			compatible = "shared-dma-pool";
 			reusable;
-			size = <0x0 0x0000000>;
+			size = <0x0 0x5c00000>;
 			alignment = <0x0 0x400000>;
 		};
 		ion_fb_reserved:linux,ion-fb {
@@ -140,7 +140,7 @@
 			/* up to 1920x1080 yuv422 8bit and 5 buffers
 			 * 1920x1080x2x5 = 20 M
 			 */
-			size = <0x0 0x0000000>;
+			size = <0x0 0x01400000>; //test
 			alignment = <0x0 0x400000>;
 		};
 	};
@@ -169,27 +169,27 @@
 
 		/* performance: reg_address, reg_value */
 		/* s4 */
-		performance_pal = <0x1bf0  0x9 /* default Matrx625 CTCC value*/
-			0x1b12  0x80c0
-			0x1b05  0xf7
-			0x1b56  0x333
-			0x1c59  0xf25c
-			0xffff  0x0>; /* ending flag */
-		performance = <0x1bf0  0x9 /* ccitt033 SVA value */
-			0x1b12  0x8040
-			0x1b05  0xfd
-			0x1b56  0x333
-			0x1c59  0xf654
-			0xffff  0x0>; /* ending flag */
-		performance_ntsc = <0x1bf0  0x9
-			0x1b12  0x8020
-			0x1b03  0x0
-			0x1b04  0x0
-			0x1b05  0x0
-			0x1b06  0x0
-			0x1b56  0x333
-			0x1c59  0xf850
-			0xffff  0x0>; /* ending flag */
+                /* performance: reg_address, reg_value */
+                /* tm2 */
+                performance = <0x1bf0  0x9
+                        0x1b56  0x333
+                        0x1b12  0x8080
+                        0x1b05  0xfd
+                        0x1c59  0xf850
+                        0xffff  0x0>; /* ending flag */
+                performance_sarft = <0x1bf0  0x9
+                        0x1b56  0x333
+                        0x1b12  0x0
+                        0x1b05  0x9
+                        0x1c59  0xfc48
+                        0xffff  0x0>; /* ending flag */
+                performance_revB_telecom = <0x1bf0  0x9
+                        0x1b56  0x546
+                        0x1b12  0x8080
+                        0x1b05  0x9
+                        0x1c59  0xf850
+                        0xffff  0x0>; /* ending flag */
+
 	};
 
 	dvb-extern {
@@ -216,7 +216,7 @@
 		fe2_reset_gpio = <&gpio GPIOZ_4 GPIO_ACTIVE_HIGH>;
 		fe2_reset_dir = <0>; /* 0: out, 1: in. */
 		fe2_ant_poweron_value = <0>;
-		fe2_ant_power_gpio = <&gpio GPIOH_9 GPIO_ACTIVE_HIGH>;
+		//fe2_ant_power_gpio = <&gpio GPIOH_9 GPIO_ACTIVE_HIGH>;
 		fe2_ts = <0>;
 		fe2_tuner1 = <3>; /* use tuner3, only S. */
 
@@ -346,7 +346,7 @@
 		nr10bit-support = <1>;
 		nrds-enable = <1>;
 		pps-enable = <1>;
-		post_nub = <10>;
+	//	post_nub = <10>;
 	};
 
 	provisionkey {
@@ -516,7 +516,7 @@
 
 		/*avout mute gpio*/
 		avout_mute-gpios = <&gpio GPIOH_5 GPIO_ACTIVE_HIGH>;
-		spk_mute-gpios = <&gpio GPIOH_8 GPIO_ACTIVE_LOW>;
+		//spk_mute-gpios = <&gpio GPIOH_8 GPIO_ACTIVE_LOW>;
 
 		aml-audio-card,dai-link@0 {
 			format = "dsp_a";
@@ -736,7 +736,7 @@
 	tlc59116: tlc59116@60 {
 		compatible = "amlogic,tlc59116_led";
 		reg = <0x60>;
-		status = "okay";
+		status = "disable";
 
 		led0 {
 			default_colors = <0 0 0>;
@@ -808,7 +808,7 @@
 	tdma: tdm@0 {
 		compatible = "amlogic, t5-snd-tdma";
 		#sound-dai-cells = <0>;
-		dai-tdm-lane-slot-mask-in = <1>;
+		dai-tdm-lane-slot-mask-in = <0 1>;
 		dai-tdm-lane-slot-mask-out = <1 0>;
 		dai-tdm-clk-sel = <0>;
 		clocks = <&clkaudio CLKID_AUDIO_MCLK_A
@@ -1022,10 +1022,10 @@
 		 * 4: pdmin;
 		 */
 		datain_src = <4>;
-		datain_chnum = <0>;
-		datain_chmask = <0x0>;
+		datain_chnum = <2>;
+		datain_chmask = <0x3>;
 		/* config which data pin for loopback */
-		datain-lane-mask-in = <0 0 0 0>;
+		datain-lane-mask-in = <1 0 0 0>;
 
 		/* calc mclk for datalb */
 		mclk-fs = <256>;
@@ -1041,7 +1041,7 @@
 		 * 7: PAD_TDMINB_D*, oe, refer to core pinmux
 		 */
 		/* if tdmin_lb >= 3, use external loopback */
-		datalb_src = <2>;
+		datalb_src = <1>;
 		datalb_chnum = <2>;
 		datalb_chmask = <0x3>;
 		/* config which data pin as loopback */
@@ -1163,9 +1163,10 @@
 
 	pdmin: pdmin {
 		mux { /* GPIOD_8, GPIOD_9 */
-			groups = "pdm_dclk_d",
-				"pdm_din0_d";
-			function = "pdm";
+		//test
+		//	groups = "pdm_dclk_d",
+		//		"pdm_din0_d";
+		//	function = "pdm";
 		};
 	};
 
@@ -1484,6 +1485,9 @@
 	status = "okay";
 	interrupt-gpios = <&gpio  GPIOX_7  GPIO_ACTIVE_HIGH>;
 	power_on-gpios = <&gpio   GPIOX_6  GPIO_ACTIVE_HIGH>;
+	/delete-property/ dhd_static_buf; /* non bcm, remove  dhd_static_buf */
+        /delete-property/ pinctrl-0;
+        /delete-property/ pinctrl-names;
 };
 
 &aml_bt {
