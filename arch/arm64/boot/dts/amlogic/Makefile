@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
+dtb-y += android_overlay_dt.dtb
 dtb-y += sm1_s905x3_ac213.dtb
 dtb-y += sm1_s905x3_ac214.dtb
 dtb-y += meson-a1-ad401.dtb
